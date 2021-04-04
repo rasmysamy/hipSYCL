@@ -71,11 +71,6 @@ jobs:
         cd "%GITHUB_WORKSPACE%/build/core"
         cmake %GITHUB_WORKSPACE% -G Ninja -DCMAKE_C_COMPILER=%GITHUB_WORKSPACE%/install/bin/clang.exe -DCMAKE_CXX_COMPILER=%GITHUB_WORKSPACE%/install/bin/clang++.exe -DCLANG_EXECUTABLE_PATH=%GITHUB_WORKSPACE%/install/bin/clang++.exe -DLLVM_DIR=%GITHUB_WORKSPACE%/install/lib/cmake/llvm -DBOOST_ROOT=%GITHUB_WORKSPACE%/boost_1_75_0 -DWITH_CUDA_BACKEND=ON -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%/install -DCMAKE_BUILD_TYPE=RelWithDebInfo
         ninja -j2 install
-    - name: Archive build results
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-result
-        path: D:/a/hipSYCL/hipSYCL
     - name: build CPU tests
       shell: cmd
       env:
@@ -86,7 +81,7 @@ jobs:
         mkdir "%GITHUB_WORKSPACE%/build/tests-cpu"
         cd "%GITHUB_WORKSPACE%/build/tests-cpu"
         cmake -G Ninja -DHIPSYCL_TARGETS="omp" -DhipSYCL_DIR=%GITHUB_WORKSPACE%/install/lib/cmake/hipSYCL -DBOOST_ROOT=%GITHUB_WORKSPACE%/boost_1_75_0 -DCMAKE_BUILD_TYPE=RelWithDebInfo %GITHUB_WORKSPACE%/tests
-        ninja -j2
+        ninja -j2       
     - name: build CUDA tests
       shell: cmd
       env:
@@ -98,6 +93,11 @@ jobs:
         cd "%GITHUB_WORKSPACE%/build/tests-cuda"
         cmake -G Ninja -DHIPSYCL_TARGETS="cuda:sm_60" -DhipSYCL_DIR=%GITHUB_WORKSPACE%/install/lib/cmake/hipSYCL -DBOOST_ROOT=%GITHUB_WORKSPACE%/boost_1_75_0 -DCMAKE_BUILD_TYPE=RelWithDebInfo %GITHUB_WORKSPACE%/tests
         ninja -j2
+    - name: Archive build results
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-result
+        path: D:/a/hipSYCL/hipSYCL
     - name: run CPU tests
       shell: cmd
       run: |
@@ -105,8 +105,8 @@ jobs:
         set GITHUB_WORKSPACE=%GITHUB_WORKSPACE:\=/%
         cd "%GITHUB_WORKSPACE%/build/tests-cpu"
         sycl_tests.exe
-    - name: Start SSH session
-      uses: luchihoratiu/debug-via-ssh@main
+#    - name: Start SSH session
+#      uses: luchihoratiu/debug-via-ssh@main
       with:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
         SSH_PASS: ${{ secrets.SSH_PASS }}
