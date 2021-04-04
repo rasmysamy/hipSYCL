@@ -76,7 +76,7 @@ jobs:
       with:
         name: build-result
         path: |
-          %GITHUB_WORKSPACE%/install
+          %GITHUB_WORKSPACE%\install
     - name: build CPU tests
       shell: cmd
       env:
