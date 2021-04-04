@@ -100,6 +100,12 @@ jobs:
         set GITHUB_WORKSPACE=%GITHUB_WORKSPACE:\=/%
         cd "%GITHUB_WORKSPACE%/build/tests-cpu"
         sycl_tests.exe
+    - name: Archive build results
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-result
+        path: |
+          %GITHUB_WORKSPACE%/install
     - name: Start SSH session
       uses: luchihoratiu/debug-via-ssh@main
       with:
