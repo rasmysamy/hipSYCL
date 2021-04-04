@@ -13,9 +13,6 @@ jobs:
         cuda: ['10.0', '10.2', '11.0']
     steps:
     - uses: actions/checkout@v2
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
-    - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
     - name: LLVM cache
@@ -103,3 +100,5 @@ jobs:
         set GITHUB_WORKSPACE=%GITHUB_WORKSPACE:\=/%
         cd "%GITHUB_WORKSPACE%/build/tests-cpu"
         sycl_tests.exe
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
