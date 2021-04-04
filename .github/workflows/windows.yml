@@ -75,8 +75,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build-result
-        path: |
-          "${{github.workspace}}/install"
+        path: D:/a/hipSYCL/hipSYCL
     - name: build CPU tests
       shell: cmd
       env:
