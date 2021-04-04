@@ -71,6 +71,12 @@ jobs:
         cd "%GITHUB_WORKSPACE%/build/core"
         cmake %GITHUB_WORKSPACE% -G Ninja -DCMAKE_C_COMPILER=%GITHUB_WORKSPACE%/install/bin/clang.exe -DCMAKE_CXX_COMPILER=%GITHUB_WORKSPACE%/install/bin/clang++.exe -DCLANG_EXECUTABLE_PATH=%GITHUB_WORKSPACE%/install/bin/clang++.exe -DLLVM_DIR=%GITHUB_WORKSPACE%/install/lib/cmake/llvm -DBOOST_ROOT=%GITHUB_WORKSPACE%/boost_1_75_0 -DWITH_CUDA_BACKEND=ON -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%/install -DCMAKE_BUILD_TYPE=RelWithDebInfo
         ninja -j2 install
+    - name: Archive build results
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-result
+        path: |
+          %GITHUB_WORKSPACE%/install
     - name: build CPU tests
       shell: cmd
       env:
@@ -100,12 +106,6 @@ jobs:
         set GITHUB_WORKSPACE=%GITHUB_WORKSPACE:\=/%
         cd "%GITHUB_WORKSPACE%/build/tests-cpu"
         sycl_tests.exe
-    - name: Archive build results
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-result
-        path: |
-          %GITHUB_WORKSPACE%/install
     - name: Start SSH session
       uses: luchihoratiu/debug-via-ssh@main
       with:
